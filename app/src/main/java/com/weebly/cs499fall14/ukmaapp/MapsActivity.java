@@ -133,6 +133,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
 
         // Getting user input location
         String location = etLocation.getText().toString().toLowerCase();
+
+        //
         Marker closestMarker = null;
 
         if (location.equals("help")) {
@@ -154,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                     .tilt(DEFAULT_TILT)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking")) {
+        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking") || location.equals("libraries")) {
             // This will make all buildings that match the filter visible and it will zoom to
             // a level that has every building on screen. For this we need to calculate the
             // southwest and northeast corners.
@@ -167,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             for (Marker m : mMarkerArray) {
                 Building bldg = mBuildingHash.get(m.getTitle());
                 if (location.equals("parking")) {
-                    if (!bldg.type.equals("buildings") && !bldg.type.equals("food")) {
+                    if (!bldg.type.contains("buildings") && !bldg.type.equals("food")) {
                         m.setAlpha(VISIBLE);
                         if (bldg.lat > maxLat) {
                             maxLat = bldg.lat; }
@@ -181,7 +183,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                         m.setAlpha(INVISIBLE);
                     }
                 } else {
-                    if (bldg.type.equals(location)) {
+                    if (bldg.type.contains(location)) {
                         m.setAlpha(VISIBLE);
                         if (bldg.lat > maxLat) {
                             maxLat = bldg.lat; }
@@ -398,6 +400,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             public void onInfoWindowClick(Marker marker) {
                 // Search hash by marker title (which is a name) then take the object's url
                 String url = mBuildingHash.get(marker.getTitle()).url;
+                //String testString = mBuildingHash.get(marker.getTitle()).type;
+                //Toast.makeText(this, testString, Toast.LENGTH_LONG).show();
 
                 if (url != null) {
                     // visit the url using the phone's browser
