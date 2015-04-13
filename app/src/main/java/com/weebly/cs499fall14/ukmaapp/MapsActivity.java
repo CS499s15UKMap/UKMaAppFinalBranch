@@ -156,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                     .tilt(DEFAULT_TILT)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking") || location.equals("libraries")) {
+        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking") || location.equals("libraries") || location.equals("chinese")|| location.equals("bar")|| location.equals("pizza")|| location.equals("burgers")|| location.equals("sandwich")|| location.equals("coffee")|| location.equals("african")|| location.equals("steak")|| location.equals("american") || location.equals("mexican")) {
             // This will make all buildings that match the filter visible and it will zoom to
             // a level that has every building on screen. For this we need to calculate the
             // southwest and northeast corners.
@@ -169,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             for (Marker m : mMarkerArray) {
                 Building bldg = mBuildingHash.get(m.getTitle());
                 if (location.equals("parking")) {
-                    if (!bldg.type.contains("buildings") && !bldg.type.equals("food")) {
+                    if (bldg.type.contains("parking")) {
                         m.setAlpha(VISIBLE);
                         if (bldg.lat > maxLat) {
                             maxLat = bldg.lat; }
@@ -184,6 +184,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                     }
                 } else {
                     if (bldg.type.contains(location)) {
+                        m.setAlpha(VISIBLE);
+                        if (bldg.lat > maxLat) {
+                            maxLat = bldg.lat; }
+                        if (bldg.lat < minLat) {
+                            minLat = bldg.lat; }
+                        if (bldg.lng > maxLng) {
+                            minLng = bldg.lng; }
+                        if (bldg.lng < minLng) {
+                            minLng = bldg.lng; }
+                    }
+                    if (bldg.foodType.contains(location)) {
                         m.setAlpha(VISIBLE);
                         if (bldg.lat > maxLat) {
                             maxLat = bldg.lat; }
@@ -307,6 +318,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         public String url = "";       // www.whitehall.com
         public String type = "";      // buildings
         public String hours = "";     // ""
+        public String foodType = "";  // chinese
+        public String parkingPolicy =""; //Any permit after three
 
         /* This constructor will fill the fields based on the incoming array "tokens" which
            represents a row from the table where each index is a column.
@@ -333,6 +346,10 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                         type = tokens[5]; }
                     if (tokens.length > 6) {
                         hours = tokens[6]; }
+                    if (tokens.length > 7) {
+                        foodType = tokens[7]; }
+                    if (tokens.length > 8) {
+                        parkingPolicy = tokens[8]; }
                 }
             }
 
@@ -347,6 +364,8 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             }
         }
     }
+
+
 
     // This parses the Buildings.csv file and populates the map with markers for buildings.
     private void setUpMarkers() {
@@ -372,11 +391,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                             .title(bldg.name) // this is what we search clicked markers by so beware
                             .alpha(INVISIBLE)); // 0.0 (invisible) - 1.0 (fully visible)
 
-                    if ((bldg.type.equals("buildings") || bldg.type.equals("food")) && !bldg.code.equals("")) {
+                    if (!bldg.parkingPolicy.equals(""))
+                    {
+                        mMarker.setSnippet(bldg.parkingPolicy);
+                    }
+                    else if ((bldg.type.equals("buildings") || bldg.type.equals("food")) && !bldg.code.equals("")) {
                         mMarker.setSnippet(bldg.code);
                     } else if (!bldg.hours.equals("")) {
                         mMarker.setSnippet(bldg.hours + " (" + bldg.type + " lot)");
                     }
+
+
                     mMarkerArray.add(mMarker); // This is so we can loop through markers later
                 }
                 mLine = reader.readLine(); // increment line
@@ -399,15 +424,17 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
             @Override
             public void onInfoWindowClick(Marker marker) {
                 // Search hash by marker title (which is a name) then take the object's url
-                String url = mBuildingHash.get(marker.getTitle()).url;
-                //String testString = mBuildingHash.get(marker.getTitle()).type;
-                //Toast.makeText(this, testString, Toast.LENGTH_LONG).show();
+                //try/catch prevents crashing if no URLL
+                try {
+                    String url = mBuildingHash.get(marker.getTitle()).url;
 
-                if (url != null) {
-                    // visit the url using the phone's browser
-                    Intent openUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(openUrl);
+                    if (url != "") {
+                        // visit the url using the phone's browser
+                        Intent openUrl = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                        startActivity(openUrl);
+                    }
                 }
+                catch(Exception e){}
             }
         });
     }
