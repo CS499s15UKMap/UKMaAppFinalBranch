@@ -138,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
         Marker closestMarker = null;
 
         if (location.equals("help")) {
-            Toast.makeText(this, "Special searches: help, all, food, buildings, parking, and reset", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Special searches: help, all, food, buildings, parking, libraries, chinese, bars, pizza, burgers, sandwich, coffee, american, mexican, african, steak, and reset", Toast.LENGTH_LONG).show();
         } else if (location.equals("all")) {
             // if "all" is searched the transparency of all markers is toggled
             float toggle = VISIBLE;
@@ -156,7 +156,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                     .tilt(DEFAULT_TILT)
                     .build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking") || location.equals("libraries") || location.equals("chinese")|| location.equals("bar")|| location.equals("pizza")|| location.equals("burgers")|| location.equals("sandwich")|| location.equals("coffee")|| location.equals("african")|| location.equals("steak")|| location.equals("american") || location.equals("mexican")) {
+        } else if (location.equals("buildings") || location.equals("food") || location.equals("parking") || location.equals("libraries") || location.equals("chinese")|| location.equals("bar")|| location.equals("pizza")|| location.equals("burgers")|| location.equals("sandwich")|| location.equals("coffee")|| location.equals("african")|| location.equals("steak")|| location.equals("american") || location.equals("mexican") || location.equals("bars")) {
             // This will make all buildings that match the filter visible and it will zoom to
             // a level that has every building on screen. For this we need to calculate the
             // southwest and northeast corners.
@@ -194,7 +194,7 @@ public class MapsActivity extends FragmentActivity implements LocationListener, 
                         if (bldg.lng < minLng) {
                             minLng = bldg.lng; }
                     }
-                    if (bldg.foodType.contains(location)) {
+                    else if (bldg.foodType.contains(location)) {
                         m.setAlpha(VISIBLE);
                         if (bldg.lat > maxLat) {
                             maxLat = bldg.lat; }
