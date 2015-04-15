@@ -1,3 +1,11 @@
+/*This file encompasses the whole application view.  In the order of typical program flow, the code will setup the google map markers,
+  * While doing that, it will load in data stored in the Buildings.csv and tokenize said data into their respective buildings instances.
+  * All markers are initially invisible
+  * User is then able to search any building or generic term that they would like
+  * Program will iterate through all the markers and find those that are relevant
+  * User can repeat this process until they have obtained the sought after information
+*/
+
 package com.weebly.cs499fall14.ukmaapp;
 
 import java.io.BufferedReader;
