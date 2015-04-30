@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+<<<<<<< HEAD
       <module fileurl="file://$PROJECT_DIR$/499APP.iml" filepath="$PROJECT_DIR$/499APP.iml" />
       <module fileurl="file://$PROJECT_DIR$/CS499.iml" filepath="$PROJECT_DIR$/CS499.iml" />
       <module fileurl="file://$PROJECT_DIR$/UKMaApp_.iml" filepath="$PROJECT_DIR$/UKMaApp_.iml" />
+=======
+      <module fileurl="file://$PROJECT_DIR$/UKMaApp.iml" filepath="$PROJECT_DIR$/UKMaApp.iml" />
+>>>>>>> origin/shields
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
